@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 5000
 
 # Run the Flask app
-CMD ["python", "telegram_channel_scaper.py"]
+CMD ["python", "script.py"]
