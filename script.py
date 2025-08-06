@@ -3,7 +3,7 @@ from telethon import TelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest
 import asyncio
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from dateutil import parser as date_parser  # pip install python-dateutil
 
 app = Flask(__name__)
@@ -33,7 +33,7 @@ def get_messages():
         except Exception:
             return jsonify({'error': 'Invalid after_date format. Use ISO 8601 like 2024-07-27T09:00:00'}), 400
     else:
-        after_date = datetime.utcnow() - timedelta(days=1)
+        after_date = datetime.now(timezone(timedelta(hours=0,minutes=0))) - timedelta(days=1)
 
     try:
         output = asyncio.run(fetch_messages(api_id, api_hash, phone, channel, after_date))
