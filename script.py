@@ -39,7 +39,7 @@ def get_messages():
             phone = lines[2].strip()
 
     # Parse date or fallback to 24h ago
-    if 'after_date' in data:
+    if 'after_date' in data and data['after_date'] is not None:
         try:
             after_date = date_parser.parse(data['after_date'])
         except Exception:
