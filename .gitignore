@@ -1,3 +1,8 @@
+#session files
+session_info.txt
+*.session
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

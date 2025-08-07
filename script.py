@@ -12,7 +12,7 @@ app = Flask(__name__)
 def get_messages():
     data = request.json or {}
 
-    required_fields = ['api_id', 'api_hash', 'phone', 'channel']
+    required_fields = ['channel']
     missing = [field for field in required_fields if field not in data]
 
     if missing:
@@ -25,6 +25,18 @@ def get_messages():
     api_hash = data['api_hash']
     phone = data['phone']
     channel = data['channel']
+
+    #if parameters are not provided, read them from the session_info.txt file
+    if not (api_id and api_hash and phone):
+        if not os.path.exists('session_info.txt'):
+            return jsonify({'error': 'Session info file not found. Please run init_session.py first.'}), 400
+        with open('session_info.txt', 'r') as f:
+            lines = f.readlines()
+            if len(lines) < 3:
+                return jsonify({'error': 'Session info file is incomplete.'}), 400
+            api_id = lines[0].strip()
+            api_hash = lines[1].strip()
+            phone = lines[2].strip()
 
     # Parse date or fallback to 24h ago
     if 'after_date' in data:
@@ -43,7 +55,7 @@ def get_messages():
 
 
 async def fetch_messages(api_id, api_hash, phone, channel, after_date):
-    client = TelegramClient('session_name', api_id, api_hash)
+    client = TelegramClient('telegram_channel_reader', api_id, api_hash)
     await client.start(phone)
 
     entity = await client.get_entity(channel)
