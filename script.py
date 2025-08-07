@@ -21,9 +21,9 @@ def get_messages():
             'missing_fields': missing
         }), 400
 
-    api_id = data['api_id']
-    api_hash = data['api_hash']
-    phone = data['phone']
+    api_id = data.get('api_id')
+    api_hash = data.get('api_hash')
+    phone = data.get('phone')
     channel = data['channel']
 
     #if parameters are not provided, read them from the session_info.txt file
